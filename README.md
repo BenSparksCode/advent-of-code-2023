@@ -15,10 +15,10 @@ Shoutout to [fspoettel](https://github.com/fspoettel) for the awesome [AoC Rust 
 cargo scaffold <day>
 
 # output:
-# Created module file "src/bin/01.rs"
+# Created Rust module file "src/bin/01.rs"
+# Created Python module file "src/bin/01.py"
 # Created empty input file "data/inputs/01.txt"
 # Created empty example file "data/examples/01.txt"
-# Created Python module file "src/bin/01.py"
 # ---
 # 🎄 Type `cargo solve 01` to run your solution.
 ```

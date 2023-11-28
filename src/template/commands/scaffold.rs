@@ -78,30 +78,10 @@ pub fn handle(day: Day) {
             .as_bytes(),
     ) {
         Ok(()) => {
-            println!("Created module file \"{}\"", &module_path);
+            println!("Created Rust module file \"{}\"", &module_path);
         }
         Err(e) => {
             eprintln!("Failed to write module contents: {e}");
-            process::exit(1);
-        }
-    }
-
-    match create_file(&input_path) {
-        Ok(_) => {
-            println!("Created empty input file \"{}\"", &input_path);
-        }
-        Err(e) => {
-            eprintln!("Failed to create input file: {e}");
-            process::exit(1);
-        }
-    }
-
-    match create_file(&example_path) {
-        Ok(_) => {
-            println!("Created empty example file \"{}\"", &example_path);
-        }
-        Err(e) => {
-            eprintln!("Failed to create example file: {e}");
             process::exit(1);
         }
     }
@@ -127,6 +107,27 @@ pub fn handle(day: Day) {
         }
         Err(e) => {
             eprintln!("Failed to write Python module contents: {e}");
+            process::exit(1);
+        }
+    }
+    // End of additional code
+
+    match create_file(&input_path) {
+        Ok(_) => {
+            println!("Created empty input file \"{}\"", &input_path);
+        }
+        Err(e) => {
+            eprintln!("Failed to create input file: {e}");
+            process::exit(1);
+        }
+    }
+
+    match create_file(&example_path) {
+        Ok(_) => {
+            println!("Created empty example file \"{}\"", &example_path);
+        }
+        Err(e) => {
+            eprintln!("Failed to create example file: {e}");
             process::exit(1);
         }
     }
