@@ -1,8 +1,8 @@
 # 🎄 Advent of Code 2023 🎄
 
-Solutions for [Advent of Code](https://adventofcode.com/) in [Python](https://www.python.org/) and [Rust](https://www.rust-lang.org/).
+My solutions for [Advent of Code](https://adventofcode.com/) in [Python](https://www.python.org/) and [Rust](https://www.rust-lang.org/).
 
-Shoutout to [fspoettel](https://github.com/fspoettel) for the awesome [AoC Rust template](https://github.com/fspoettel/advent-of-code-rust). I've modified it slightly to handle Python as well as Rust 🫡
+Shoutout to [fspoettel](https://github.com/fspoettel) for the awesome [AoC Rust template](https://github.com/fspoettel/advent-of-code-rust). I've modified it to handle Python as well as Rust 🫡
 
 ---
 
