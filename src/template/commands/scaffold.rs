@@ -34,6 +34,23 @@ mod tests {
 }
 "#;
 
+// Create an additional .py file for a Python solution along with each Rust solution
+const PYTHON_MODULE_TEMPLATE: &str = r#"
+# Advent of Code 2023 - Day DAY_NUMBER
+
+def part_one(input):
+    return None
+
+def part_two(input):
+    return None
+
+if __name__ == "__main__":
+    with open(f"data/inputs/DAY.txt", "r") as file:
+        input_data = file.read().strip()
+    print("Part One:", part_one(input_data))
+    print("Part Two:", part_two(input_data))
+"#;
+
 fn safe_create_file(path: &str) -> Result<File, std::io::Error> {
     OpenOptions::new().write(true).create_new(true).open(path)
 }
@@ -85,6 +102,31 @@ pub fn handle(day: Day) {
         }
         Err(e) => {
             eprintln!("Failed to create example file: {e}");
+            process::exit(1);
+        }
+    }
+
+    // Additional code to handle creating the Python solution file
+    let python_module_path = format!("src/bin/{day}.py");
+    let mut python_file = match safe_create_file(&python_module_path) {
+        Ok(file) => file,
+        Err(e) => {
+            eprintln!("Failed to create Python module file: {e}");
+            process::exit(1);
+        }
+    };
+
+    match python_file.write_all(
+        PYTHON_MODULE_TEMPLATE
+            .replace("DAY_NUMBER", &day.into_inner().to_string())
+            .replace("DAY", &day.to_string())
+            .as_bytes(),
+    ) {
+        Ok(()) => {
+            println!("Created Python module file \"{}\"", &python_module_path);
+        }
+        Err(e) => {
+            eprintln!("Failed to write Python module contents: {e}");
             process::exit(1);
         }
     }
