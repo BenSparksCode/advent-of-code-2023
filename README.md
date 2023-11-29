@@ -1,4 +1,10 @@
-# 🎄 Advent of Code 2023 🎄
+<p align="center">
+    <picture>
+        <img src="./.assets/AdventOfCode2023RustAndPythonWide.png" alt="Rust crab and Python snake celebrating Advent of Code 2023" width="400" />
+    </picture>
+</p>
+
+<h1 align="center">🎄 Advent of Code 2023 🎄</h1>
 
 My solutions for [Advent of Code](https://adventofcode.com/) in [Python](https://www.python.org/) and [Rust](https://www.rust-lang.org/).
 
