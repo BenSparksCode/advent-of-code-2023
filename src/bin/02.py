@@ -15,6 +15,19 @@ def check_num_color_valid(numColor: str) -> bool:
 
     return True
 
+def get_max_num_by_color(gameRounds: str, color: str) -> int:
+    if color not in gameRounds: return 0
+    maxNum = 0 
+    colorSightings = gameRounds.split(color)
+    colorSightingsCount = gameRounds.count(color)
+    for i, colorSplitStr in enumerate(colorSightings):
+        # Only take left of color word, so might have extra right item after last color sighting
+        if i == colorSightingsCount: break
+        # Take last 3 chars of the sighting - should be number and maybe spaces
+        if maxNum < int(colorSplitStr[-3:].strip()): maxNum = int(colorSplitStr[-3:].strip())
+    
+    return maxNum
+
 def part_one(input):
     total = 0
 
@@ -37,7 +50,19 @@ def part_one(input):
     return total
 
 def part_two(input):
-    return None
+    total = 0
+
+    for line in input.split("\n"):
+        lineParts = line.split(":")
+        allRounds = lineParts[1]
+
+        maxGreen = get_max_num_by_color(allRounds, "green")
+        maxBlue = get_max_num_by_color(allRounds, "blue")
+        maxRed = get_max_num_by_color(allRounds, "red")
+            
+        total += maxGreen * maxBlue * maxRed
+        
+    return total
 
 if __name__ == "__main__":
     with open(f"data/inputs/02.txt", "r") as file:
