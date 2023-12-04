@@ -1,4 +1,4 @@
-use advent_of_code::template::commands::{all, download, read, scaffold, solve};
+use advent_of_code::template::commands::{all, download, read, scaffold, open, solve};
 use args::{parse, AppArguments};
 
 mod args {
@@ -14,6 +14,9 @@ mod args {
             day: Day,
         },
         Scaffold {
+            day: Day,
+        },
+        Open {
             day: Day,
         },
         Solve {
@@ -43,6 +46,9 @@ mod args {
                 day: args.free_from_str()?,
             },
             Some("scaffold") => AppArguments::Scaffold {
+                day: args.free_from_str()?,
+            },
+            Some("open") => AppArguments::Open {
                 day: args.free_from_str()?,
             },
             Some("solve") => AppArguments::Solve {
@@ -81,6 +87,7 @@ fn main() {
             AppArguments::Download { day } => download::handle(day),
             AppArguments::Read { day } => read::handle(day),
             AppArguments::Scaffold { day } => scaffold::handle(day),
+            AppArguments::Open { day } => open::handle(day),
             AppArguments::Solve {
                 day,
                 release,
