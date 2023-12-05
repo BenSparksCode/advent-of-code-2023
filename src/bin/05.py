@@ -1,5 +1,6 @@
 # Advent of Code 2023 - Day 5
 
+import multiprocessing
 from typing import List, Tuple
 
 # Interpolation Table
@@ -52,6 +53,18 @@ def convert_via_table(val_start: int, col_start: int, col_end: int, table: Table
     # If no rule for value, map 1:1
     return convert_via_table(val_start, col_start+1, col_end, table)
 
+# Function for multiprocessing
+def find_lowest_loc_in_seed_range(args) -> int:
+    lowest_loc = 99_999_999_999
+    if len(args) != 3: return lowest_loc
+    range_start, range_end, table = args
+    for seed in range(range_start, range_end + 1):
+        loc = convert_via_table(seed, 0, len(table), table)
+        if loc < lowest_loc:
+            lowest_loc = loc
+            print("new lowest loc found:", lowest_loc)
+    return lowest_loc
+
 
 def part_one(input):
     seeds = [int(i) for i in input.split("\n")[0].split(" ")[1:]]
@@ -66,7 +79,17 @@ def part_one(input):
 
 
 def part_two(input):
-    return None
+    seed_sets = [int(i) for i in input.split("\n")[0].split(" ")[1:]]
+    table = build_table(get_ranges_tbl_from_input(input))
+    args_list = [[] for i in range(int(len(seed_sets) / 2))]
+
+    for i in range(0, int(len(seed_sets) / 2)):
+        args_list[i] = [seed_sets[i * 2], seed_sets[i * 2] + seed_sets[(i * 2) + 1], table]
+
+    with multiprocessing.Pool(processes=10) as pool:
+        results = pool.map(find_lowest_loc_in_seed_range, args_list)
+    
+    return min(results)
 
 
 if __name__ == "__main__":
