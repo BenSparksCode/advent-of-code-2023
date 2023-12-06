@@ -1,5 +1,7 @@
 # Advent of Code 2023 - Day 6
 
+import math
+
 def part_one(input):
     lines = input.split("\n")
     times = [int(i) for i in lines[0].split(":")[1].split(" ") if len(i) > 0]
@@ -15,7 +17,18 @@ def part_one(input):
     return prod
 
 def part_two(input):
-    return None
+    lines = input.split("\n")
+    time = int("".join([i for i in lines[0].split(":")[1].split(" ") if len(i) > 0]))
+    dist = int("".join([i for i in lines[1].split(":")[1].split(" ") if len(i) > 0]))
+    strats = 0
+
+    start_cut = math.ceil(dist / time)
+    end_cut = math.floor(time - start_cut)
+
+    for i in range(start_cut, end_cut + 1):
+        if (i * (time - i)) > dist: strats += 1
+
+    return strats
 
 if __name__ == "__main__":
     with open(f"data/inputs/06.txt", "r") as file:
