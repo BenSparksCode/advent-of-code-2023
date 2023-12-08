@@ -1,5 +1,7 @@
 # Advent of Code 2023 - Day 8
 
+import math
+
 def part_one(input):
     directions = input.split("\n")[0]
     lines = input.split("\n")[2:]
@@ -23,7 +25,36 @@ def part_one(input):
     return steps
 
 def part_two(input):
-    return None
+    # 6 XXAs and XXZs in my input
+    directions = input.split("\n")[0]
+    lines = input.split("\n")[2:]
+
+    nodes = {}
+    curr_nodes = []
+    nodes_steps = []
+
+    # Build hashmap of nodes
+    for line in lines:
+        k, v = line.split(" = ")
+        if k[2] == "A": curr_nodes.append(k)
+        nodes[k] = tuple(v.replace("(","").replace(")", "").split(", "))
+
+    # For each of the XXA nodes, find their XXZ path
+    for node in curr_nodes:
+        steps = 0
+        found = False
+        while(not found):
+            for d in directions:
+                if node[2] == "Z":
+                    nodes_steps.append(steps)
+                    found = True
+                    break
+
+                steps += 1
+                node = nodes[node][0] if d == "L" else nodes[node][1]
+
+    # Unpacks the list of steps with *, and calculates LCM of those numbers
+    return math.lcm(*nodes_steps)    
 
 if __name__ == "__main__":
     with open(f"data/inputs/08.txt", "r") as file:
