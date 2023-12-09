@@ -20,7 +20,14 @@ def part_one(input):
     return total
 
 def part_two(input):
-    return None
+    lines = input.split("\n")
+    total = 0
+
+    for line in lines:
+        nums = [int(i) for i in line.split(" ")]
+        total += next_in_seq(nums[::-1])
+
+    return total
 
 if __name__ == "__main__":
     with open(f"data/inputs/09.txt", "r") as file:
