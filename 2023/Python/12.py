@@ -41,7 +41,7 @@ def part_two(input):
 
 
 if __name__ == "__main__":
-    with open(f"data/inputs/12.txt", "r") as file:
+    with open(f"data/2023/inputs/12.txt", "r") as file:
         input_data = file.read().strip()
     print("Part One:", part_one(input_data))
     print("Part Two:", part_two(input_data))

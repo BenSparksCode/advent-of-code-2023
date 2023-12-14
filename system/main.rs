@@ -15,9 +15,11 @@ mod args {
         },
         Scaffold {
             day: Day,
+            year: Option<u32>
         },
         Open {
             day: Day,
+            year: Option<u32>,
         },
         Solve {
             day: Day,
@@ -47,9 +49,11 @@ mod args {
             },
             Some("scaffold") => AppArguments::Scaffold {
                 day: args.free_from_str()?,
+                year: args.opt_value_from_str("--year")?,
             },
             Some("open") => AppArguments::Open {
                 day: args.free_from_str()?,
+                year: args.opt_value_from_str("--year")?,
             },
             Some("solve") => AppArguments::Solve {
                 day: args.free_from_str()?,
@@ -86,8 +90,8 @@ fn main() {
             AppArguments::All { release, time } => all::handle(release, time),
             AppArguments::Download { day } => download::handle(day),
             AppArguments::Read { day } => read::handle(day),
-            AppArguments::Scaffold { day } => scaffold::handle(day),
-            AppArguments::Open { day } => open::handle(day),
+            AppArguments::Scaffold { day, year } => scaffold::handle(day, year),
+            AppArguments::Open { day, year } => open::handle(day, year),
             AppArguments::Solve {
                 day,
                 release,
