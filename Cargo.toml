@@ -1,17 +1,23 @@
 [package]
 name = "advent_of_code"
 version = "0.9.2"
-authors = ["Felix Spöttel <1682504+fspoettel@users.noreply.github.com>"]
-edition = "2021"
+authors = ["Felix Spöttel", "Ben Sparks"]
+edition = "2023"
 default-run = "advent_of_code"
 publish = false
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [lib]
 doctest = false
+path = "system/lib.rs"
+
+[[bin]]
+name = "advent_of_code"
+path = "system/main.rs"
 
 [features]
 test_lib = []
 
 [dependencies]
 pico-args = "0.5.0"
+chrono = "0.4"

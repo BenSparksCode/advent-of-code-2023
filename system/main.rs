@@ -18,6 +18,7 @@ mod args {
         },
         Open {
             day: Day,
+            year: Option<u32>,
         },
         Solve {
             day: Day,
@@ -50,6 +51,7 @@ mod args {
             },
             Some("open") => AppArguments::Open {
                 day: args.free_from_str()?,
+                year: args.opt_value_from_str("--year")?,
             },
             Some("solve") => AppArguments::Solve {
                 day: args.free_from_str()?,
@@ -87,7 +89,7 @@ fn main() {
             AppArguments::Download { day } => download::handle(day),
             AppArguments::Read { day } => read::handle(day),
             AppArguments::Scaffold { day } => scaffold::handle(day),
-            AppArguments::Open { day } => open::handle(day),
+            AppArguments::Open { day, year } => open::handle(day, year),
             AppArguments::Solve {
                 day,
                 release,
