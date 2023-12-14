@@ -3,7 +3,7 @@ use std::{
     fmt::Display,
     process::{Command, Output, Stdio},
 };
-
+use chrono::Datelike;
 use crate::Day;
 
 #[derive(Debug)]
@@ -36,7 +36,8 @@ pub fn check() -> Result<(), AocCommandError> {
 }
 
 pub fn read(day: Day) -> Result<Output, AocCommandError> {
-    let puzzle_path = get_puzzle_path(day);
+    let year = get_year();
+    let puzzle_path = get_puzzle_path(day, year);
 
     let args = build_args(
         "read",
@@ -52,8 +53,9 @@ pub fn read(day: Day) -> Result<Output, AocCommandError> {
 }
 
 pub fn download(day: Day) -> Result<Output, AocCommandError> {
-    let input_path = get_input_path(day);
-    let puzzle_path = get_puzzle_path(day);
+    let year = get_year();
+    let input_path = get_input_path(day, year);
+    let puzzle_path = get_puzzle_path(day, year);
 
     let args = build_args(
         "download",
@@ -82,28 +84,27 @@ pub fn submit(day: Day, part: u8, result: &str) -> Result<Output, AocCommandErro
     call_aoc_cli(&args)
 }
 
-fn get_input_path(day: Day) -> String {
-    format!("data/inputs/{day}.txt")
+fn get_input_path(day: Day, year: u32) -> String {
+    format!("data/{year}/inputs/{day}.txt")
 }
 
-fn get_puzzle_path(day: Day) -> String {
-    format!("data/puzzles/{day}.md")
+fn get_puzzle_path(day: Day, year: u32) -> String {
+    format!("data/{year}/puzzles/{day}.md")
 }
 
-fn get_year() -> Option<u16> {
+fn get_year() -> u32 {
     match std::env::var("AOC_YEAR") {
-        Ok(x) => x.parse().ok().or(None),
-        Err(_) => None,
+        Ok(x) => x.parse().unwrap_or_else(|_| chrono::Utc::now().year() as u32),
+        Err(_) => chrono::Utc::now().year() as u32,
     }
 }
 
 fn build_args(command: &str, args: &[String], day: Day) -> Vec<String> {
     let mut cmd_args = args.to_vec();
 
-    if let Some(year) = get_year() {
-        cmd_args.push("--year".into());
-        cmd_args.push(year.to_string());
-    }
+    let year = get_year();
+    cmd_args.push("--year".into());
+    cmd_args.push(year.to_string());
 
     cmd_args.append(&mut vec!["--day".into(), day.to_string(), command.into()]);
 

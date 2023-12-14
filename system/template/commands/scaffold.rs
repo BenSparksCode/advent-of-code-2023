@@ -3,7 +3,7 @@ use std::{
     io::Write,
     process,
 };
-
+use chrono::Datelike;
 use crate::Day;
 
 const MODULE_TEMPLATE: &str = r#"advent_of_code::solution!(DAY_NUMBER);
@@ -35,8 +35,7 @@ mod tests {
 "#;
 
 // Create an additional .py file for a Python solution along with each Rust solution
-const PYTHON_MODULE_TEMPLATE: &str = r#"
-# Advent of Code 2023 - Day DAY_NUMBER
+const PYTHON_MODULE_TEMPLATE: &str = r#"# Advent of Code YEAR - Day DAY_NUMBER
 
 def part_one(input):
     return None
@@ -45,7 +44,7 @@ def part_two(input):
     return None
 
 if __name__ == "__main__":
-    with open(f"data/inputs/DAY.txt", "r") as file:
+    with open(f"data/YEAR/inputs/DAY.txt", "r") as file:
         input_data = file.read().strip()
     print("Part One:", part_one(input_data))
     print("Part Two:", part_two(input_data))
@@ -59,10 +58,13 @@ fn create_file(path: &str) -> Result<File, std::io::Error> {
     OpenOptions::new().write(true).create(true).open(path)
 }
 
-pub fn handle(day: Day) {
-    let input_path = format!("data/inputs/{day}.txt");
-    let example_path = format!("data/examples/{day}.txt");
-    let module_path = format!("src/bin/{day}.rs");
+pub fn handle(day: Day, year: Option<u32>) {
+    let year = year.unwrap_or_else(|| chrono::Utc::now().year() as u32);
+
+    let input_path = format!("data/{year}/inputs/{:02}.txt", day.into_inner());
+    let module_path = format!("{year}/Rust/{:02}.rs", day.into_inner());
+    let python_module_path = format!("{year}/Python/{:02}.py", day.into_inner());
+
 
     let mut file = match safe_create_file(&module_path) {
         Ok(file) => file,
@@ -87,7 +89,6 @@ pub fn handle(day: Day) {
     }
 
     // Additional code to handle creating the Python solution file
-    let python_module_path = format!("src/bin/{day}.py");
     let mut python_file = match safe_create_file(&python_module_path) {
         Ok(file) => file,
         Err(e) => {
@@ -100,6 +101,7 @@ pub fn handle(day: Day) {
         PYTHON_MODULE_TEMPLATE
             .replace("DAY_NUMBER", &day.into_inner().to_string())
             .replace("DAY", &day.to_string())
+            .replace("YEAR", &year.to_string())
             .as_bytes(),
     ) {
         Ok(()) => {
@@ -118,16 +120,6 @@ pub fn handle(day: Day) {
         }
         Err(e) => {
             eprintln!("Failed to create input file: {e}");
-            process::exit(1);
-        }
-    }
-
-    match create_file(&example_path) {
-        Ok(_) => {
-            println!("Created empty example file \"{}\"", &example_path);
-        }
-        Err(e) => {
-            eprintln!("Failed to create example file: {e}");
             process::exit(1);
         }
     }
