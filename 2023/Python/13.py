@@ -34,6 +34,20 @@ def find_reflection_start(scores: List[int]) -> int:
         if mirror: return i
     return -1 # if no mirror found
 
+def find_reflection_start_with_smudge(scores: List[int]) -> int:
+    for i in range(1,len(scores)):
+        side1 = scores[:i][::-1]
+        side2 = scores[i:]
+        diffSum = 0
+        for j in range(min(len(side1), len(side2))):
+            # All zeroes must be removed from abs diffs. 100 -> 1
+            if side1[j] == side2[j]: continue
+            diffSum += int(str(abs(side1[j] - side2[j])).replace("0", ""))
+            if diffSum > 1:
+                break
+        if diffSum == 1: return i
+    return -1 # if no mirror found
+
 
 def part_one(input):
     patterns = input.split("\n\n")
@@ -55,7 +69,22 @@ def part_one(input):
 
 
 def part_two(input):
-    return None
+    patterns = input.split("\n\n")
+    patterns = [p.split("\n") for p in patterns]
+    total = 0
+
+    for p in patterns:
+        rows = get_row_scores(p)
+        row_mirror = find_reflection_start_with_smudge(rows)
+        if row_mirror != -1:
+            total += row_mirror * 100
+            continue
+        cols = get_col_scores(p)
+        col_mirror = find_reflection_start_with_smudge(cols)
+        if col_mirror != -1:
+            total += col_mirror
+
+    return total
 
 
 if __name__ == "__main__":
