@@ -71,7 +71,35 @@ def part_one(input):
 
 
 def part_two(input):
-    return None
+    init_grid = [list(i) for i in input.split("\n")]
+    energized, grid = {}, init_grid
+    max_energized = 0
+
+    # Iterate length, alternating top and bottom starts
+    for x in range(len(grid[0])):
+        energized, grid = {}, init_grid # clear and traverse again
+        beam_explore(tuple([x, 0]), DOWN, grid, energized)
+        cnt = reduce(lambda acc, k: acc + 1, energized.keys(), 0)
+        if cnt > max_energized: max_energized = cnt
+
+        energized, grid = {}, init_grid # clear and traverse again
+        beam_explore(tuple([x, len(grid) - 1]), UP, grid, energized)
+        cnt = reduce(lambda acc, k: acc + 1, energized.keys(), 0)
+        if cnt > max_energized: max_energized = cnt
+
+    # Iterate height, alternating left and right starts
+    for y in range(len(grid)):
+        energized, grid = {}, init_grid # clear and traverse again
+        beam_explore(tuple([0, y]), RIGHT, grid, energized)
+        cnt = reduce(lambda acc, k: acc + 1, energized.keys(), 0)
+        if cnt > max_energized: max_energized = cnt
+
+        energized, grid = {}, init_grid # clear and traverse again
+        beam_explore(tuple([len(grid[0]) - 1, y]), LEFT, grid, energized)
+        cnt = reduce(lambda acc, k: acc + 1, energized.keys(), 0)
+        if cnt > max_energized: max_energized = cnt
+
+    return max_energized
 
 
 if __name__ == "__main__":
