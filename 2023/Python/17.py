@@ -88,6 +88,10 @@ def djikstra(grid: List[List[int]], cost_grid: List[List[List[List[int]]]]):
             # TODO update to allow cnt of x to overwrite costs of cells == or with higher cnt than selves
             if new_cost < pos_dir_cnt_to_cumulative_cost(m[0], m[1], new_dir_cnt, cost_grid):
                 cost_grid[m[0][1]][m[0][0]][new_dir_cnt - 1][m[1] - 1] = new_cost
+
+                if m[0][0] == w - 1 and m[0][1] == h - 1: return
+
+                # TODO probably remove this cumulative moves dimension thing
                 for cnt_i in range(new_dir_cnt + 1, 4): # cnt:2 overwrites 2 and 3 cnts
                     if new_cost < pos_dir_cnt_to_cumulative_cost(m[0], m[1], cnt_i, cost_grid):
                         cost_grid[m[0][1]][m[0][0]][cnt_i - 1][m[1] - 1] = new_cost
